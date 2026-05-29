@@ -42,7 +42,7 @@ char	*get_next_line(int fd)
 	int			find_null;
 
 	newline_pos = 0;
-	find_NULL = 0;
+	find_null = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	ft_search_new_line(fd, &storage_box);
