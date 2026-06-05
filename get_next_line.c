@@ -1,22 +1,29 @@
 #include "get_next_line.h"
 
-char	*ft_search_newliwe(int fd, char **storage_box)
+static void	*ft_clean(char **storage_box)
+{
+	free(*storage_box);
+	*storage_box = NULL;
+	return (NULL);
+}
+
+char	*ft_search_newline(int fd, char **storage_box)
 {
 	char	*buffer;
 	char	*temp;
 	int		bytes_read;
 
 	bytes_read = 1;
-	while ((bytes_read > 0) && (ft_strchr(*storage_box, '\n') == NULL))
+	while ((bytes_read > 0) && (!ft_strchr(*storage_box, '\n')))
 	{
 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
-			return (NULL);
+			return (ft_clean(storage_box));
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		if (bytes_read == -1)
 		{
 			free(buffer);
-			return (NULL);
+			return (ft_clean(storage_box));
 		}
 		buffer[bytes_read] = '\0';
 		temp = *storage_box;
@@ -27,30 +34,28 @@ char	*ft_search_newliwe(int fd, char **storage_box)
 	return (*storage_box);
 }
 
-int	ft_getlen(int pos, char *s)
-{
-	while (s[pos])
-		pos++;
-	return (pos);
-}
-
 char	*get_next_line(int fd)
 {
 	static char	*storage_box;
 	char		*to_print;
+	char		*temp;
 	int			newline_pos;
-	int			find_null;
 
-	newline_pos = 0;
-	find_null = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	ft_search_new_line(fd, &storage_box);
-	if (!storage_box)
-		return (NULL);
-	newline_pos = ft_strchr(storage_box, '\n') - storage_box;
-	to_print = ft_substr(storage_box, 0, (newline_pos + 1));
-	find_NULL = ft_getlen(newline_pos, storage_box);
-	storage_box = ft_substr(storage_box, (newline_pos + 1), find_null);
+	ft_search_newline(fd, &storage_box);
+	if (!storage_box || !*storage_box)
+		return (free(storage_box), storage_box = NULL, NULL);
+	if (!ft_strchr(storage_box, '\n'))
+		newline_pos = ft_strlen(storage_box);
+	else
+		newline_pos = (ft_strchr(storage_box, '\n') - storage_box + 1);
+	to_print = ft_substr(storage_box, 0, newline_pos);
+	if (!to_print)
+		return (ft_clean(&storage_box));
+	temp = storage_box;
+	storage_box = ft_substr(storage_box, newline_pos,
+			ft_strlen(storage_box) - newline_pos);
+	free(temp);
 	return (to_print);
 }
