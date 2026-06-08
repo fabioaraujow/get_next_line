@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fabde-ar <fabde-ar@student.4242porto.com>  +#+  +:+       +#+        */
+/*   By: fabde-ar <fabde-ar@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 10:25:59 by fabde-ar          #+#    #+#             */
 /*   Updated: 2026/06/08 10:34:15 by fabde-ar         ###   ########.fr       */
