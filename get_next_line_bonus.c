@@ -6,7 +6,7 @@
 /*   By: fabde-ar <fabde-ar@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/08 10:25:59 by fabde-ar          #+#    #+#             */
-/*   Updated: 2026/06/08 10:34:15 by fabde-ar         ###   ########.fr       */
+/*   Updated: 2026/07/10 18:14:07 by fabde-ar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,11 @@ char	*ft_search_newline(int fd, char **storage_box)
 	char	*buffer;
 	char	*temp;
 	int		bytes_read;
+	char	sep;
 
 	bytes_read = 1;
-	while ((bytes_read > 0) && (!ft_strchr(*storage_box, '\n')))
+	sep = '\n';
+	while ((bytes_read > 0) && (!ft_strchr(*storage_box, sep)))
 	{
 		buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 		if (!buffer)
@@ -51,17 +53,19 @@ char	*get_next_line(int fd)
 	static char	*storage_box[MAX_FD];
 	char		*to_print;
 	char		*temp;
+	char		sep;
 	int			newline_pos;
 
+	sep = '\n';
 	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
 		return (NULL);
 	ft_search_newline(fd, &storage_box[fd]);
 	if (!storage_box[fd] || !*storage_box[fd])
 		return (free(storage_box[fd]), storage_box[fd] = NULL, NULL);
-	if (!ft_strchr(storage_box[fd], '\n'))
+	if (!ft_strchr(storage_box[fd], sep))
 		newline_pos = ft_strlen(storage_box[fd]);
 	else
-		newline_pos = (ft_strchr(storage_box[fd], '\n') - storage_box[fd] + 1);
+		newline_pos = (ft_strchr(storage_box[fd], sep) - storage_box[fd] + 1);
 	to_print = ft_substr(storage_box[fd], 0, newline_pos);
 	if (!to_print)
 		return (ft_clean(&storage_box[fd]));
